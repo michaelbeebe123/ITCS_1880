@@ -1,0 +1,37 @@
+---
+title: "Reading CSVs Part 2"
+author: "Michael Beebe"
+date: "9/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Install and load the readr package}
+
+library(readr)
+
+```
+
+```{r Create a variable called path to hold the path to your CSV file}
+
+# I couldn't find this file in the book downloads, so I just used a dataset
+# from kaggle
+path <- "datasets_544515_993508_Fake Pizza Data.csv"
+
+```
+
+```{r Create a variable called pizza that will call the read_delim function}
+
+pizza <- read_delim(file = path, delim = ",")
+
+```
+
+```{r Print the pizza variable to console}
+
+pizza
+
+```
+

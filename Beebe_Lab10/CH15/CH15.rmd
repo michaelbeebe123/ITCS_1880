@@ -1,0 +1,106 @@
+---
+title: 'Lab Assignment: Chapter 15 - Reshaping Data in the Tidyverse'
+author: "Michael Beebe"
+output:
+  word_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Dependencies}
+library(dplyr)
+library(tibble)
+library(readr)
+library(tidyr)
+```
+
+1. Binding Rows and Columns
+--
+
+Create 2 tibbles:
+
+* tbl1 will have the numbers 1-5 as IDs, and the first names of 5 characters from your favorite TV show  
+* tbl2 will have the numbers 1-4, & 6 as IDs, and the last names of the characters 1-4 above, and the last name of a different character that doesn't match from tbl1
+```{r Create 2 tibbles}
+tibble1 <- tibble(
+  ID = c(1:5),
+  F_Names = c("Michael", "Dwight", "Jim", "Pam", "Toby")
+)
+
+tibble2 <- tibble(
+  ID = c(1:4, 6),
+  L_Names = c("Scott", "Schrute", "Halpert", "Beasley", "Malone")
+)
+
+tibble1
+tibble2
+```
+
+Join the rows and print the results to the screen
+```{r Join the rows and print the results to the screen}
+tibble3 <- full_join(tibble1, tibble2)
+
+tibble3
+```
+
+2. Joins with dplyr
+--
+
+Add a line or lines to your script that will join the tables from step 1 above into 1 table  
+
+* Use the ID field to join the tables  
+* Use a left join and a take a screen shot of your results  
+* Use a right join and take a screen shot of your results
+```{r Left join}
+left <- left_join(
+  tibble1,
+  tibble2,
+  by = "ID"
+)
+
+left
+```
+
+```{r Right join}
+right <- right_join(
+  tibble1,
+  tibble2,
+  by = "ID"
+)
+
+right
+```
+
+
+3. Converting Data Formats
+--  
+
+Use the read_tsv file function to read the "reaction.txt" file from the book site  
+
+* Store the data into a variable "emotion"  
+* Print emotion to the screen
+```{r Use the read_tsv file function to read the "reaction.txt" file from the book site  }
+emotion <- read_tsv("../../Data/reaction.txt")
+head(emotion)
+```
+
+Gather the data with a key = Type and value = Measurement
+```{r Gather the data}
+emotion %>%
+  gather(
+    key = Type,
+    value = Measurement
+  )
+```
+
+Arrange the data from the step above by ID
+```{r Arrange the data from the step above by ID}
+emotion %>%
+  arrange(ID)
+```
+
+
+
+

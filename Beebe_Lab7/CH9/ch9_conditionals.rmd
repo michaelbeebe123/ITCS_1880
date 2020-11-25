@@ -1,0 +1,126 @@
+---
+Title: "Lab Assignment 7 - Chapter 9"
+Author: "Michael Beebe"
+output:
+  html_document: default
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(glue)
+```
+
+1. if and else
+--
+```{r Create a variable now, weekday, mondthday, time}
+
+now <- Sys.time()
+weekday <- format(now, "%A")
+monthday <- format(now, "%e")
+time <- format(now, "%H")
+
+```
+
+```{r Print weekday, monthday, and time to the screen}
+
+print(
+  glue("Weekday: {weekday}\n
+       Monthday: {monthday}\n
+       Time: {time}")
+)
+
+```
+
+```{r Use an if statement to determine if the monthday is < 15}
+
+if (monthday < 15) {
+  print("It is the beginning of the month")
+} else {
+  print("It is the end of the month")
+}
+
+```
+
+```{r Now create a function called greeting}
+
+greeting <- function(name) {
+  timeofday <- ""
+  
+  if (timeofday < 12) {
+    timeofday <- "morning"
+  } else if (timeofday >= 12 && timeofday < 17) {
+    timeofday <- "afternoon"
+  } else {
+    timeofday <- "evening"
+  }
+  
+  result <- glue("Hello {name}, good {timeofday}!")
+  return(result)
+}
+```
+
+```{r Create a variable called "say.hello"}
+
+say.hello <- greeting("Michael")
+say.hello
+
+```
+
+2. switch
+--
+```{r Add a function called math.sign}
+
+math.sign <- function(num1, num2, x) {
+  operator <- ""
+  calculation <- 0
+  switch (x,
+    "+" = {
+      operator <- "addition"
+      calculation <- num1 + num2
+    },
+    "-" = {
+      operator <- "subtraction"
+      calculation <- num1 - num2
+    },
+    "/" = {
+      operator <- "division"
+      calculation <- num1 / num2
+    },
+    "*" = {
+      operator <- "multiplication"
+      calculation <- num1 * num2
+    }
+  )
+  output <- glue("The {operator} of the 2 numbers is: {calculation}")
+  return(output)
+}
+
+```
+
+```{r Pass the values: 10, 2 and each sign to test your switch statement}
+print(math.sign(10, 2, "+"))
+print(math.sign(10, 2, "-"))
+print(math.sign(10, 2, "/"))
+print(math.sign(10, 2, "*"))
+```
+
+3. ifelse
+--
+```{r Add a vector variable the holds the days of the week}
+
+daysofweek <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+
+```
+
+```{r Use an ifelse compound test to see if it is a Saturday or Sunday}
+
+for (i in daysofweek) {
+  if (i == "Sunday" || i == "Saturday") {
+    print(glue("It's {i}. Yay it's the weekend!"))
+  } else {
+    print(glue("It's {i}. Darn, time to go to work."))
+  }
+}
+
+```
+

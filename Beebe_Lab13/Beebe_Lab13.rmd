@@ -1,0 +1,248 @@
+---
+title: 'Lab Assignment: Chapter 18 - Basic Statistics'
+author: "Michael Beebe"
+output:
+  word_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Dependencies, warning=FALSE}
+library(ggplot2)
+library(GGally)
+library(MASS)
+library(reshape2)
+library(plyr)
+library(dplyr)
+```
+
+1. Summary Stastics
+--  
+
+Create a variable - stats - and store a random sample of 100 numbers between 100 and 200. Use replace=TRUE 
+```{r}
+stats <- sample(x = 100:200, size = 100, replace = TRUE)
+head(stats)
+```
+
+Calculate the mean
+```{r}
+mean(stats)
+```
+
+Calculate the variance (2 ways)
+```{r}
+sum((stats - mean(stats))^2) / (length(stats) - 1)
+```
+
+```{r}
+var(stats)
+```
+
+Calculate the standard deviation (2 ways)
+```{r}
+sqrt(var(stats))
+```
+
+```{r}
+sd(stats)
+```
+
+
+Display the summary statistics
+```{r}
+summary(stats)
+```
+
+Display the 1st and 3rd quartiles in a different way than the summary statistics
+```{r}
+quantile(x = stats, probs = c(.25, .75))
+```
+
+A student's grades are the following: quiz 1= 78, quiz 2 = 74, quiz 3 = 78, quiz 4 = 76, midterm = 68, and final = 90. The quizzes are weighted at 1/8 of the final grade and the exams are weighted at 1/4.  
+```{r}
+grades <- c(78, 74, 78, 76, 68, 90)
+weights <- c(1/8, 1/8, 1/8, 1/8, 1/4, 1/4)
+```
+
+* Display the mean.
+```{r}
+mean(grades)
+```
+
+Display the weighted mean.
+```{r}
+weighted.mean(x = grades, w = weights)
+```
+
+2. Correlation and Covariance
+--
+
+Using the Old Faithful data, store the waiting time in a variable and the eruption duration in another
+```{r}
+wait <- faithful$waiting
+duration <- faithful$eruptions
+```
+
+Find the correlation coefficient of eruption duration and waiting time in the data set faithful.
+```{r}
+cor(wait, duration)
+```
+
+```{r}
+cor(faithful)
+```
+
+Observe if there is any linear relationship between the variables.  
+```{r}
+ggplot(data.frame(x=wait, y=duration), aes(x=x, y=y)) +
+  geom_point() +
+  labs(x ="Wait Time", y = "Eruption Time", title = "Old Faithful")
+```
+
+
+* We can see that there is very much so a linear correlation between wait time between eruptions and the duration of the eruption.
+
+Using the same variables find the covariance, and analyze the results
+```{r}
+cov(wait, duration)
+```
+
+```{r}
+cov(faithful)
+```
+
+Use the cor function on a matrix to evaluate the faithful data.
+```{r}
+mat <- cbind(wait, duration)
+cor(mat)
+```
+
+Graph the Old Faithful data
+```{r}
+ggpairs(faithful)
+```
+
+3. T-Tests
+--  
+
+Use the built-in data set named immer, which contains data on the barley yield in years 1931 and 1932 of a field.  
+```{r}
+head(immer)
+```
+
+The data follows the normal distribution. Find the 95% confidence interval estimate of the difference between the mean barley yields.  
+```{r}
+t.test(immer$Y1, immer$Y2, paired = TRUE, conf.level = 0.95)
+```
+
+Analyze the results  
+```{r}
+yieldDiff <- immer$Y2 - immer$Y1
+
+ggplot(immer, aes(x=Y2 - Y1)) +
+  geom_density() +
+  geom_vline(xintercept = mean(yieldDiff)) +
+  geom_vline(xintercept = mean(yieldDiff) + 2*c(-1,1) * sd(yieldDiff) / sqrt(nrow(immer)), linetype=2)
+```
+
+
+4. ANOVA
+--  
+
+Complete the Analysis of Variance for the TIPS data
+```{r}
+data(tips, package = "reshape2")
+head(tips)
+```
+
+```{r message=FALSE}
+ggpairs(tips)
+```
+
+
+```{r}
+tipAnova <- aov(tip ~ day - 1, tips)
+tipIntercept <- aov(tip ~ day, tips)
+```
+
+```{r}
+tipAnova$coefficients
+```
+
+```{r}
+tipIntercept$coefficients
+```
+
+```{r}
+summary(tipAnova)
+```
+
+Analyze the p-values for each set of summary data.  
+```{r}
+tipsByDay <- ddply(
+  tips,
+  "day",
+  summarize,
+  tip.mean=mean(tip),
+  Length=NROW(tip),
+  tip.sd=sd(tip),
+  tfrac=qt(p=.90, df=Length-1),
+  Lower=tip.mean - tfrac*tip.sd/sqrt(Length),
+  Upper=tip.mean + tfrac*tip.sd/sqrt(Length)
+)
+tipsByDay
+```
+
+Plot the dataset.
+```{r}
+ggplot(tipsByDay, aes(x=tip.mean, y=day)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin=Lower, xmax=Upper), height=.3) +
+  labs(x="Mean Tips", y="Day", title = {"Mean Tips by Day"})
+```
+
+Complete the Analysis of Variance for the Old Faithful data.
+```{r}
+head(faithful)
+```
+
+```{r}
+faithfulAnova <- aov(eruptions ~ waiting -1, faithful)
+faithfulIntercept <- aov(eruptions ~ waiting, faithful)
+```
+
+```{r}
+faithfulAnova$coefficients
+```
+
+```{r}
+faithfulIntercept$coefficients
+```
+
+```{r}
+summary(faithfulAnova)
+```
+
+Analyze the p-values for each set of summary data.  
+```{r warning=FALSE}
+eruptionsByWait <- ddply(
+  faithful,
+  "waiting",
+  summarize,
+  eruptions.mean=mean(eruptions),
+  Length=NROW(eruptions),
+  eruptions.sd=sd(eruptions),
+  tfrac=qt(p=.90, df=Length-1),
+  Lower=eruptions.mean - tfrac*eruptions.sd/sqrt(Length),
+  Upper=eruptions.mean + tfrac*eruptions.sd/sqrt(Length)
+)
+head(eruptionsByWait)
+```
+
+Plot the dataset.
+```{r message=FALSE}
+ggpairs(faithful)
+```

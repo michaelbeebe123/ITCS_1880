@@ -1,0 +1,48 @@
+---
+title: "1. Data Frames - Part 1"
+author: "Michael Beebe"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Create 3 vectors: x, y  and z.}
+x <- c(1:10)
+y <- c(10:1)
+z <- c(x*3)
+```
+
+```{r Create a data frame called myDF that will hold the x, y and z vectors.}
+myDF <- data.frame(x, y, z)
+myDF
+```
+
+```{r Now, instead of x*3, set z to hold y*3}
+z <- c(y*3)
+myDF <- data.frame(x, y, z)
+```
+
+```{r Include code that will print myDF to the console again. What is different?}
+myDF
+```
+
+We can now see that the z variable in myDF has been changed from x* 3 to y *3
+
+```{r Issue 3 typeof() statements - one for each vector. Why is z different?}
+typeof(x)
+typeof(y)
+typeof(z)
+```
+
+z is different because it is the result of a mathematical operation.
+
+```{r Issue an is.vector(z) statement - what value do you get?}
+is.vector(z)
+```
+```{r Issue an is.data.frame(myDF) statement - what value do you get?}
+is.data.frame(myDF)
+```
+

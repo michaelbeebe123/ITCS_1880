@@ -1,0 +1,133 @@
+---
+title: "Database"
+author: "Michael Beebe"
+date: "9/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Install the RSQLite package and load it into R using RStudio}
+
+library(RSQLite)
+
+```
+
+```{r Specify the SQLite driver and store in a drv variable.}
+
+drv <- SQLite()
+drv
+
+```
+
+```{r Establish your connection to the diamonds database}
+
+conn <- dbConnect(drv = drv, "./Data/diamonds.db")
+conn
+
+```
+
+```{r List the tables in the database}
+
+dbListTables(conn = conn)
+
+```
+
+```{r For each table list the fields}
+
+dbListFields(conn = conn, name = "DiamondColors")
+
+```
+
+```{r}
+
+dbListFields(conn = conn, name = "diamonds")
+
+```
+
+```{r}
+
+dbListFields(conn = conn, name = "sqlite_stat1")
+
+```
+
+```{r All of the fields in the diamonds table}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT *
+           FROM diamonds;
+           ")
+
+```
+
+```{r All of the fields from the DiamondColors table}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT *
+           FROM DiamondColors;
+           ")
+
+```
+
+```{r All of the fields from as a result of joining the diamonds and DiamondColors tables}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT *
+           FROM diamonds
+           JOIN DiamondColors ON diamonds.color = DiamondColors.Color;
+           ")
+
+```
+
+```{r All of the fields form the DiamondColors table where color = "E"}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT *
+           FROM DiamondColors
+           WHERE color = 'E';
+           ")
+
+```
+
+```{r The top 10 rows from the diamonds table where color="E"}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT *
+           FROM diamonds
+           WHERE color = 'E'
+           LIMIT 10;
+           ")
+
+```
+
+```{r A count of the rows from the diamonds table where color="E"}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT COUNT()
+           FROM diamonds
+           WHERE color = 'E';
+           ")
+
+```
+
+```{r A query of your choice from the joined tables, where you have selected specific columns (<5) and have a WHERE condition.}
+
+dbGetQuery(conn = conn,
+           "
+           SELECT carat, clarity, price
+           FROM diamonds
+           JOIN DiamondColors ON diamonds.color = DiamondColors.Color
+           WHERE cut = 'Premium'
+           LIMIT 10;
+           ")
+
+```
+

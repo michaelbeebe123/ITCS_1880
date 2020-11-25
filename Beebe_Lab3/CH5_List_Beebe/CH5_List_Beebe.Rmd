@@ -1,0 +1,72 @@
+---
+title: "3. Lists"
+author: "Michael Beebe"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r You will create a data frame called games that will contain a column with the Opponent (ex. Steelers) and Result (ex. W or L)}
+
+games <- data.frame(
+  "opponent" = c("Titans", "Jets", "Rams", "Ravens", "49ers", "Seahawks", "Patriots", "Broncos", "Bills", "Steelers", "Dolphins", "Steelers", "Bengals", "Cardinals", "Ravens", "Bengals"),
+  "result" = c("L", "W", "L", "W", "L", "L", "L", "L", "W", "W", "W", "L", "W", "L", "L", "L"),
+  stringsAsFactors = FALSE
+)
+games
+
+```
+
+```{r You will create a date frame called wins that will contain a column with the values "Home" and "Away" and a column with number of wins at home and wins away}
+
+wins <- data.frame(
+  "Location" = c("Home", "Away"),
+  "Wins" = c(4, 2),
+  stringsAsFactors = FALSE
+)
+wins
+
+```
+
+```{r You will create a date frame called losses that will contain a column with the values "Home" and "Away" and a column with number of losses at home and wins away}
+
+losses <- data.frame(
+  "Location" = c("Home", "Away"),
+  "Losses" = c("4", "6"),
+  stringsAsFactors = FALSE
+)
+losses
+
+```
+
+
+```{r Create a list called browns that contains these data frames}
+
+browns <- list(
+  "Opponent" = games,
+  "Wins" = wins,
+  "Losses" = losses
+)
+browns
+
+```
+
+```{r Find the length of your browns list and print to the console}
+
+length(browns)
+
+```
+
+It doesn't say in the instructions to add the "coaches" list to "browns", so I am assuming this is what the lab is asking for.
+
+```{r Add an element to the list called "coaches" which will contain the number of coaches the Browns have had since 1999 (including the new one)}
+
+coaches <- list()
+append(coaches, 12)
+
+```

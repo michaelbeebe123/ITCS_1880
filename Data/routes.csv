@@ -1,0 +1,193 @@
+"From","To","Time"
+"Austin","Las Vegas",153
+"Austin","Portland",219
+"Austin","San Francisco",206
+"Austin","Los Angeles",166
+"Austin","San Diego",159
+"Austin","Seattle",236
+"Boston","Las Vegas",318
+"Boston","Palm Springs",332
+"Boston","San Diego",343
+"Boston","Seattle",338
+"Boston","Los Angeles",344
+"Boston","Portland",342
+"Boston","San Francisco",361
+"Chicago","Las Vegas",207
+"Chicago","Portland",241
+"Chicago","San Francisco",253
+"Chicago","Los Angeles",235
+"Chicago","Palm Springs",226
+"Chicago","San Diego",234
+"Chicago","Seattle",241
+"Los Angeles","Austin",151
+"Los Angeles","DFW",151
+"Los Angeles","Las Vegas",43
+"Los Angeles","EWR",286
+"Los Angeles","Philadelphia",282
+"Los Angeles","San Francisco",57
+"Los Angeles","IAD",263
+"Los Angeles","LGA",325
+"Los Angeles","Boston",298
+"Los Angeles","Chicago",211
+"Los Angeles","Fort Lauderdale",270
+"Los Angeles","JFK",290
+"Los Angeles","Orlando",257
+"Los Angeles","Portland",117
+"Los Angeles","Seattle",134
+"Los Angeles","DAL",178
+"Los Angeles","DCA",271
+"DAL","San Francisco",207
+"DAL","DCA",172
+"DAL","Las Vegas",158
+"DAL","Seattle",231
+"DAL","Los Angeles",178
+"DAL","LGA",196
+"DAL","Palm Springs",167
+"DAL","Portland",225
+"DAL","San Diego",172
+"DFW","Las Vegas",147
+"DFW","Portland",218
+"DFW","San Francisco",200
+"DFW","Los Angeles",166
+"DFW","Palm Springs",157
+"DFW","San Diego",159
+"DFW","Seattle",226
+"Fort Lauderdale","Las Vegas",292
+"Fort Lauderdale","Palm Springs",298
+"Fort Lauderdale","San Diego",302
+"Fort Lauderdale","Seattle",353
+"Fort Lauderdale","Los Angeles",307
+"Fort Lauderdale","Portland",353
+"Fort Lauderdale","San Francisco",343
+"Las Vegas","Austin",136
+"Las Vegas","Chicago",184
+"Las Vegas","Fort Lauderdale",255
+"Las Vegas","EWR",261
+"Las Vegas","Portland",113
+"Las Vegas","Seattle",129
+"Las Vegas","DAL",158
+"Las Vegas","Boston",269
+"Las Vegas","DFW",132
+"Las Vegas","Los Angeles",41
+"Las Vegas","JFK",265
+"Las Vegas","Philadelphia",254
+"Las Vegas","San Francisco",69
+"Las Vegas","IAD",238
+"Las Vegas","San Diego",46
+"JFK","Las Vegas",301
+"JFK","Portland",331
+"JFK","San Diego",322
+"JFK","Seattle",330
+"JFK","Los Angeles",325
+"JFK","Palm Springs",316
+"JFK","San Francisco",346
+"LGA","DAL",196
+"LGA","Los Angeles",325
+"LGA","San Francisco",339
+"EWR","Las Vegas",297
+"EWR","Portland",334
+"EWR","San Francisco",342
+"EWR","Los Angeles",322
+"EWR","Palm Springs",313
+"EWR","San Diego",323
+"EWR","Seattle",328
+"Orlando","Los Angeles",288
+"Orlando","San Diego",288
+"Orlando","Las Vegas",272
+"Orlando","San Francisco",322
+"Orlando","Seattle",341
+"Palm Springs","Boston",332
+"Palm Springs","Fort Lauderdale",298
+"Palm Springs","EWR",313
+"Palm Springs","Portland",129
+"Palm Springs","Seattle",146
+"Palm Springs","DAL",167
+"Palm Springs","Chicago",201
+"Palm Springs","JFK",316
+"Palm Springs","Philadelphia",307
+"Palm Springs","San Francisco",73
+"Palm Springs","IAD",293
+"Philadelphia","Las Vegas",291
+"Philadelphia","Palm Springs",307
+"Philadelphia","San Francisco",333
+"Philadelphia","Portland",318
+"Philadelphia","Los Angeles",313
+"Philadelphia","San Diego",311
+"Philadelphia","Seattle",322
+"Portland","Austin",210
+"Portland","Chicago",214
+"Portland","Fort Lauderdale",353
+"Portland","Los Angeles",116
+"Portland","JFK",284
+"Portland","Palm Springs",120
+"Portland","San Francisco",84
+"Portland","DAL",225
+"Portland","Boston",290
+"Portland","DFW",196
+"Portland","Las Vegas",106
+"Portland","EWR",282
+"Portland","Philadelphia",282
+"Portland","San Diego",126
+"Portland","IAD",266
+"San Diego","Austin",142
+"San Diego","Chicago",211
+"San Diego","Fort Lauderdale",302
+"San Diego","EWR",284
+"San Diego","Philadelphia",279
+"San Diego","San Francisco",70
+"San Diego","IAD",259
+"San Diego","Boston",293
+"San Diego","DFW",147
+"San Diego","JFK",288
+"San Diego","Orlando",242
+"San Diego","Portland",129
+"San Diego","Seattle",146
+"San Diego","DAL",172
+"San Diego","Las Vegas",52
+"Seattle","Austin",210
+"Seattle","DFW",200
+"Seattle","Las Vegas",60
+"Seattle","EWR",279
+"Seattle","Palm Springs",135
+"Seattle","San Francisco",103
+"Seattle","DAL",231
+"Seattle","Boston",285
+"Seattle","Chicago",211
+"Seattle","Fort Lauderdale",318
+"Seattle","Los Angeles",130
+"Seattle","JFK",280
+"Seattle","Orlando",298
+"Seattle","Philadelphia",277
+"Seattle","San Diego",141
+"Seattle","IAD",262
+"IAD","Las Vegas",274
+"IAD","Portland",313
+"IAD","San Francisco",320
+"IAD","Los Angeles",299
+"IAD","Palm Springs",293
+"IAD","San Diego",297
+"IAD","Seattle",312
+"DCA","DAL",172
+"DCA","San Diego",291
+"DCA","Las Vegas",280
+"DCA","San Francisco",329
+"DCA","Los Angeles",301
+"San Francisco","Austin",183
+"San Francisco","EWR",293
+"San Francisco","JFK",298
+"San Francisco","Los Angeles",57
+"San Francisco","Chicago",221
+"San Francisco","Palm Springs",64
+"San Francisco","Portland",76
+"San Francisco","San Diego",70
+"San Francisco","IAD",275
+"San Francisco","DAL",207
+"San Francisco","Boston",304
+"San Francisco","DFW",177
+"San Francisco","Fort Lauderdale",301
+"San Francisco","Las Vegas",66
+"San Francisco","Orlando",286
+"San Francisco","Philadelphia",290
+"San Francisco","Seattle",95
+"San Francisco","DCA",284
+"San Francisco","LGA",339

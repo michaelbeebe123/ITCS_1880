@@ -1,0 +1,188 @@
+---
+title: "Chapter 12 - Faster Group Manipulation with dplyr"
+author: "Michael Beebe"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---  
+--------------------------------------------------------------------------------    
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(readr)
+```
+
+1. dplyr  
+--  
+
+From the textbook data files, load the the housing.csv data
+```{r From the textbook data files, load the the housing.csv data}
+housing <- read.csv("../../Data/housing.csv")
+head(housing, 5)
+```
+
+2. Select  
+--  
+
+Using the housing data and basic select, display the neighborhood and boro
+```{r Using the housing data and basic select, display the neighborhood and boro}
+neighborhood_boro <-
+  housing %>%
+    select(Neighborhood, Boro)
+
+head(neighborhood_boro, 10)
+```
+
+Select neighborhood and year built by using a vector passed to the select function
+```{r Select neighborhood and year built by using a vector passed to the select function}
+neighborhood_year <-
+  housing %>%
+    select(c(Neighborhood, Year.Built))
+
+head(neighborhood_year, 10)
+# I am not getting a warning
+```
+
+Select the neighborhood and square footage using the column positions rather than names
+```{r Select the neighborhood and square footage using the column positions rather than names}
+neighborhood_sqft <-
+  housing %>%
+    select(1, 5)
+
+head(neighborhood_sqft, 10)
+```
+
+Select the neighborhood and the columns that start with E
+```{r Select the neighborhood and the columns that start with E}
+neighborhood_e_cols <-
+  housing %>%
+    select(Neighborhood, starts_with("e"))
+
+head(neighborhood_e_cols, 10)
+```
+
+Select the neighborhood and the columns that end with t
+```{r Select the neighborhood and the columns that end with t}
+neighborhood_t_cols <-
+  housing %>%
+    select(Neighborhood, ends_with("t"))
+
+head(neighborhood_t_cols, 10)
+```
+
+
+Select the columns that match the pattern ".Income". The word Income should be at the end of the string.
+```{r Select the columns that match the pattern ".Income". The word Income should be at the end of the string.}
+neighbord_income <-
+  housing %>%
+    select(Neighborhood, ends_with(".income"))
+
+head(neighbord_income, 10)
+```
+
+3. Filter
+--
+
+Using the housing data, filter the data based on construction built after or equal to the year 2009
+```{r Using the housing data, filter the data based on construction built after or equal to the year 2009}
+after_2009 <-
+  housing %>%
+    filter(Year.Built >= 2009)
+
+head(after_2009, 5)
+```
+
+Issue a select and store the Neighborhood, Year Built, and Boro in a variable
+```{r Issue a select and store the Neighborhood, Year Built, and Boro in a variable, message=FALSE}
+neighborhood_yb_boro <-
+  housing %>%
+    select(Neighborhood, Year.Built, Boro)
+
+head(neighborhood_yb_boro, 5)
+```
+
+Filter on Boro in the Bronx or Brooklyn
+```{r Filter on Boro in the Bronx or Brooklyn}
+bronx_brooklyn <-
+  neighborhood_yb_boro %>%
+    filter(Boro == "Bronx" | Boro == "Brooklyn")
+
+head(bronx_brooklyn, 5)
+tail(bronx_brooklyn, 5)
+```
+
+Using the housing data, filter on Year Built > 1999 and Total Units > 200
+```{r Using the housing data, filter on Year Built > 1999 and Total Units > 200}
+yb_tu <-
+  housing %>%
+    filter(Year.Built > 1999 & Total.Units > 200)
+
+head(yb_tu, 5)
+```
+
+Declare 2 variables - theCol and theVal  
+ - Use filter and sprintf to filter the housing data on Neighborhoods in the Financial District  
+ - Disregard warning message if you receive one
+```{r Declare 2 variables - theCol and theVal }
+theCol <- housing$Neighborhood
+theVal <- sprintf("%s", "FINANCIAL")
+
+fincancial_district <-
+  housing %>%
+    filter(theCol == theVal)
+
+head(fincancial_district, 5)
+```
+
+4. Slice
+--  
+
+Using the housing data, take a slice of rows 10-20
+```{r Using the housing data, take a slice of rows 10-20}
+housing %>%
+  slice(10:20)
+```
+
+Now, using the same data take a slice of rows 1-5 and the last 5 rows 
+```{r Now, using the same data take a slice of rows 1-5 and the last 5 rows}
+housing %>%
+  slice(c(1:5, (n()-4):n()))
+```
+
+5. Mutate
+--  
+Create a new column called Age  
+ - This column will subtract the year built from the current year  
+ - You will need to pipe select and mutate
+```{r Create a new column called Age}
+Age <-
+  housing %>%
+    select(Neighborhood, Year.Built) %>%
+    mutate(Age = 2020 - Year.Built)
+
+head(Age)
+```
+
+6. Summarize and Group By
+--  
+
+Using the housing date and the summarize function, find the mean square footage
+```{r Using the housing date and the summarize function, find the mean square footage}
+mean_sqft <-
+  housing %>%
+    summarize("Mean Sq Ft" = mean(Gross.SqFt))
+
+mean_sqft
+```
+
+Using summarize and group by, find the mean square footage and group by Neighborhood
+```{r Using summarize and group by, find the mean square footage and group by Neighborhood, message=FALSE}
+mean_sqft_neighborhood <-
+  housing %>%
+    group_by(Neighborhood) %>%
+    summarize("Mean Sq Ft" = mean(Gross.SqFt))
+
+head(mean_sqft_neighborhood, 5)
+```

@@ -1,0 +1,84 @@
+---
+title: "4. Matrices"
+author: "Michael Beebe"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r Create a matrix called mymat1}
+
+mymat1 <- matrix(
+  data = c(4.3, 3.1, 8.2, 8.2, 3.2, 0.9, 1.6, 6.5),
+  nrow = 4,
+  ncol = 2,
+  byrow = FALSE
+)
+
+```
+
+```{r Create a matrix called mymat2}
+
+mymat2 <- matrix(
+  data = c(4.3, 3.1, 8.2, 8.2, 3.2, 0.9, 1.6, 6.5),
+  nrow = 4,
+  ncol = 2,
+  byrow = FALSE
+)
+
+```
+
+```{r Include code that will print each matrix to the console}
+
+print(mymat1)
+print(mymat2)
+
+```
+
+```{r Display the number of rows and number of columns to the console}
+
+glue::glue("Number of rows in mymat1: {nrow(mymat1)}")
+glue::glue("Number of columns in mymat1: {ncol(mymat1)}")
+
+glue::glue("Number of rows in mymat2: {nrow(mymat2)}")
+glue::glue("Number of columns in mymat2: {ncol(mymat2)}")
+
+```
+
+```{r Add mymat1 and mymat2}
+
+mymat3 <- mymat1 + mymat2
+mymat3
+
+```
+
+```{r Multiply mymat1 and mymat2}
+
+mymat4 <- mymat1 * mymat2
+mymat4
+
+```
+
+```{r Check to see if the elements are equal in each matrix}
+
+mymat1
+mymat2
+
+```
+
+The values of mymat1 and mymat2 are still equal because I assigned the added/multiplied values to a new matrix. In order to change the values of mymat1 or mymat2, we would need to reassign their value to mymat1 + mymat2 or mymat1 * mymat2.
+
+```{r Perform matrix multiplication by transposing mymat2 onto mymat1}
+
+mymat5 <- t(mymat2) * t(mymat1)
+mymat5
+
+```
+
+Matrix multiplication is a commonly used operation in mathematics, requiring the number of columns of the left-hand matrix to be the same as the number of rows of the right-hand matrix. 
+

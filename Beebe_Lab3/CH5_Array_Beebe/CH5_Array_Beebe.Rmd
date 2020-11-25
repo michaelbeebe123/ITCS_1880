@@ -1,0 +1,38 @@
+---
+title: "5. Arrays"
+author: "Michael Beebe"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Create an Array called myArray}
+
+myArray <- array(
+  data = c(1:24),
+  dim = c(2, 4, 3)
+)
+
+```
+
+```{r Display the value in each of the 3 first rows}
+
+head(myArray, 3)
+
+```
+
+```{r Display the value of the 1st row, second column in the first matrix}
+
+myArray[1, 2, 1]
+
+```
+
+```{r Display the value of the 2nd row, second column in each matrix}
+
+myArray[2, 2, ]
+
+```
+

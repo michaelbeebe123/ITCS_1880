@@ -1,0 +1,61 @@
+---
+Title: "Lab Assignment 7 - Chapter 10"
+Author: "Michael Beebe"
+output:
+  html_document: default
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(glue)
+```
+
+1. for Loops
+--
+```{r Create a simple for loop the will iterate through the numbers 1 - 10 and multiply each by 3}
+
+for (i in 1:10) {
+  print(i * 3)
+}
+
+```
+
+```{r Create a vector variable called "scooby.gang"}
+
+scooby.gang <- c(
+  "Scooby-Doo",
+  "Shaggy Rogers",
+  "Fred Jones",
+  "Daphne Blake",
+  "Velma Dinkley"
+)
+
+```
+
+```{r find the length of the character names in scooby.gang and print them to the screen}
+
+scoobyLength <- 0
+
+for (i in scooby.gang) {
+  print(nchar(i))
+  scoobyLength <- scoobyLength + nchar(i)
+}
+
+print(glue("\n\nTotal of the characters in all of the strings: {scoobyLength}"))
+
+```
+
+2. while Loops
+--
+```{r In a while loop:}
+
+n1 <- 10
+n2 <- 2
+
+while (n1 > n2) {
+  print(n1)
+  n1 <- n1 - 1
+}
+
+```
+

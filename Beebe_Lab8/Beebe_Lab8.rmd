@@ -1,0 +1,123 @@
+---
+Title: Lab Assignment 8 - Chapter 11
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(glue)
+library(plyr)
+library(data.table)
+```
+
+1. Apply Family
+--
+```{r Create a matrix that stores the values 1 through 15 and has 5 rows and 3 columns}
+matrix <- matrix(data = 1:15, nrow = 5, ncol = 3)
+matrix
+```
+
+```{r Use apply to apply the function mean to all the elements of each row}
+apply(X = matrix, MARGIN = 1, FUN = mean)
+```
+
+```{r Use apply to apply the function mean to all the elements of each column}
+apply(X = matrix, MARGIN = 2, FUN = mean)
+```
+
+```{r Do the above with the sum function as well.}
+apply(X = matrix, MARGIN = 1, FUN = sum)
+```
+```{r}
+apply(X = matrix, MARGIN = 2, FUN = sum)
+```
+
+```{r Create a list with 2 elements - one that stores numbers 1 through10 and one that stores 11 through 20.}
+LIST <- list(1:10, 11:20)
+```
+
+```{r Use lapply to find the mean and the sum of the value in each element}
+lapply(X = LIST, FUN = mean)
+```
+
+```{r}
+lapply(X = LIST, FUN = sum)
+```
+
+
+```{r Use sapply to find the mean and the sum of the values}
+sapply(LIST, mean)
+```
+
+```{r}
+sapply(LIST, sum)
+```
+
+
+2. Aggregate
+--
+```{r Chickens dataset}
+head(chickwts)
+```
+
+```{r Using the aggregate function, find the mean weight of chickens by feed type. }
+aggregate(x = chickwts$weight, by = list(chickwts$feed), FUN = mean)
+```
+
+```{r Now use the data that includes the Number of Breaks in Yarn while weaving.}
+head(warpbreaks)
+```
+
+```{r Group by tension and find the average number of breaks}
+aggregate(x = warpbreaks$breaks, by = list(warpbreaks$tension), FUN = mean)
+```
+
+```{r Group by wool and find the average number of breaks}
+aggregate(x = warpbreaks$breaks, by = list(warpbreaks$wool), FUN = mean)
+```
+
+```{r Find the average number of breaks by wool and tension}
+aggregate(x = warpbreaks$breaks, by = list(warpbreaks$wool, warpbreaks$tension), FUN = mean)
+```
+
+3. plyr
+--
+```{r Using the techniques in the book and the built-in baseball dataset, compute the On-Base Percentages (OBP) for the players in the baseball dataset}
+head(baseball)
+```
+
+```{r Use ddply and your function to calculate and display results sorted by OBP}
+head(ddply(baseball, .(id), summarise, OBP = h / ab, .drop = TRUE))
+```
+
+4. data.table
+--
+
+```{r Create a variable called carsDT that will hold the data from the built-in mtcars dataset.}
+carsDT <- data.table(mtcars, keep.rownames = TRUE)
+head(carsDT)
+```
+
+```{r Find the mean mpg using your data table}
+mean_mpg <-mean(carsDT$mpg)
+mean_mpg
+```
+
+```{r Find the mean mpg but group by am}
+aggregate(
+  x = carsDT$mpg,
+  by = list(am = carsDT$am),
+  FUN = mean
+)
+```
+
+```{r Find the mean mpg but group by am, and cyl.}
+aggregate(
+  x = carsDT$mpg,
+  by = list(am = carsDT$am, cyl = carsDT$cyl),
+  FUN = mean
+)
+```
+

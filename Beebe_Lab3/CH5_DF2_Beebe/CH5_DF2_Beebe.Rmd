@@ -1,0 +1,69 @@
+---
+title: "2. Data Frames - Part 2"
+author: "Michael Beebe"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r Setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r Find at least 6 Marvel (yes you read that right) superheros.}
+
+hero <- c("Spider Man", "Thor", "Jean Grey", "Emma Frost", "Elektra", "Human Torch")
+gender <- c("M", "M", "F", "F", "F", "M")
+movies <- c(3, 5, 7, 4, 1, 4)
+
+```
+
+```{r Construct a data frame (6x3) marvel that contains 3 vectors with the data from above}
+
+marvel <- data.frame("hero" = hero, "gender" = gender, "movies" = movies, stringsAsFactors = FALSE)
+factor(marvel$gender)
+marvel
+
+```
+
+```{r Add a column to your data frame called "popularity".}
+
+marvel$popularity <- marvel$movies
+marvel$popularity[marvel$movies < 5] <- "low"
+marvel$popularity[marvel$movies >= 5][marvel$movies <= 7] <- "med"
+marvel$popularity[marvel$movies > 7] <- "high"
+marvel
+
+```
+
+```{r Change one of your number of movie data points to a different number. Maker sure this changes their popularity rating.}
+
+marvel$movies[1] <- 10
+marvel$popularity[marvel$movies < 5] <- "low"
+marvel$popularity[marvel$movies >= 5][marvel$movies <= 7] <- "med"
+marvel$popularity[marvel$movies > 7] <- "high"
+marvel
+
+```
+
+```{r Include code that will print the following data to the console using R functions:}
+
+glue::glue("Rows: {dim(marvel)[1]}")
+glue::glue("Columns: {dim(marvel)[2]}")
+head(marvel, 3)
+tail(marvel, 3)
+```
+
+```{r Include code that will print the 3rd row of your data frame to the console}
+
+marvel[3,]
+
+```
+
+```{r Include code that will print the 1st and 2nd columns of the 2nd and 3rd row of your data frame to the console}
+
+marvel[2:3, 1:2]
+
+```
+

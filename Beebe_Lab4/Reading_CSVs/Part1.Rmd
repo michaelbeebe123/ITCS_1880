@@ -1,0 +1,23 @@
+---
+title: "Reading CSVs Part 1"
+author: "Michael Beebe"
+date: "9/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Use read.csv with the filename from above as the argument}
+
+csv <- read.csv("2019.q1-q2 927110 NAICS 927110 Space research and technology.csv")
+
+```
+
+```{r Display the top 10 rows of this file to the console.}
+
+head(csv, 10)
+
+```
+

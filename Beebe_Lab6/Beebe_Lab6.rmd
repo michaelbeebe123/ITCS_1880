@@ -1,0 +1,128 @@
+---
+title: "Lab Assignment 6"
+author: "Michael Beebe"
+date: "9/28/2020"
+output:
+  word_document: default
+  html_document: default
+---  
+
+1. Hello World
+--
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(glue)
+```
+
+```{r Create a function called hello that will print "Hello World" to the screen}
+
+hello <- function() {
+  print("Hola Munda")
+}
+
+hello()
+
+```
+
+2. Function Arguments
+--
+```{r Create a new function called hello.friend}
+
+hello.friend <- function(firstName, lastName) {
+  print(glue("Hola {firstName} {lastName}"))
+}
+
+hello.friend(firstName = "Michael", lastName =  "Beebe")
+
+```
+
+```{r Copy your hello.friend function and add a default argument value for last name}
+
+hello.friend2 <- function(firstName, lastName = "Beebe") {
+  print(glue("Hola {firstName} {lastName}"))
+}
+
+```
+
+```{r Call once with only first name}
+
+hello.friend2(firstName = "Michael")
+
+```
+
+```{r Once with a different last name than the default value}
+
+hello.friend2(firstName = "Michael", lastName = "Jordan")
+
+```
+
+3. Function Arguments and Return Values
+--
+```{r Create a function called calc.percent}
+
+calc.percent <- function(i) {
+  percent <- round(i, digits = 1)
+  result <- glue("{percent * 100}%")
+  return(result)
+}
+
+```
+
+```{r Create a vector called numbers}
+
+numbers <- c(0.555, 0.265, 0.755, 0.335, 0.995, 1.555)
+
+```
+
+```{r Create a variable "p"}
+
+p <- calc.percent(numbers)
+p
+
+```
+
+4. do.call
+--
+
+Part 1
+```{r Call your hello.friend function with arguments for first and last name}
+
+do.call(
+  what = hello.friend,
+  args = list("Bob", "Ross"),
+  quote = TRUE
+)
+
+```
+Part 2
+```{r Create a function called math.fun}
+
+math.fun <- function(x, func = mean) {
+  do.call(
+    what = func,
+    args = list(x),
+    quote = TRUE
+  )
+}
+
+```
+
+```{r No value for func}
+math.fun(x = numbers)
+```
+```{r func = sum}
+math.fun(x = numbers, func = sum)
+```
+
+```{r func = max}
+math.fun(x = numbers, func = max)
+```
+
+```{r func = min}
+math.fun(x = numbers, func = min)
+```
+
+```{r func = sd}
+math.fun(x = numbers, func = sd)
+```
+

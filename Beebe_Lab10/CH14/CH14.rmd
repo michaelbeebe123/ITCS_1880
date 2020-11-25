@@ -1,0 +1,192 @@
+---
+title: 'Lab Assignment: Chapter 14 - Data Reshaping'
+author: "Michael Beebe"
+output:
+  html_document: default
+  word_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Dependencies}
+library(stringr)
+library(plyr)
+library(reshape2)
+library(ggplot2)
+library(scales)
+```
+
+1. cbind and rbind
+--  
+
+Create 3 vectors: start, finish, and numeric  
+
+* The start vector has the first 10 capital letters of the alphabet  
+* The finish vector has the last 10 capital letters of the alphabet  
+* The numeric vector has the numbers 1-10
+```{r Create 3 vectors: start, finish, and numeric }
+start <- c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J")
+finish <- c("Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+numeric <- c(1:10)
+```
+
+Use cbind to bind these vectors into table1 by column
+```{r Use cbind to bind these vectors into table1 by column}
+table1 <- cbind(start, finish, numeric)
+table1
+```
+
+Use rbind to bind these vectors into table2 by row
+```{r Use rbind to bind these vectors into table2 by row}
+table2 <- rbind(start, finish, numeric)
+table2
+```
+
+Create 2 CSV files - data1.csv and data2.csv  
+
+* data1.csvshould have the column titles "Course" and "Title"   
+-- List 7 courses and titles in the Data Analytics Degree  
+* data2.csv should have the column titles "Credits" and "Semester"  
+-- List the credit hours and the semester you should take the courses in data1.csv  
+```{r Create 2 CSV files - data1.csv and data2.csv}
+# DFs THAT WE WILL USE TO MAKE THE CSVs
+data1 <- data.frame(
+  Course = c("ITCS 1010", "ITDB 1300", "ITDB 1400", "ITDB 1405", "ITCS 1880", "ITON 1205", "ITCS 1870"),
+  Title = c("Programming Logic", "Intro to Database Theory", "Intro to SQL", "Oracle PL/SQL Programming", "R Programming", "Network+ and Networking Essentials", "Python Programming")
+)
+
+data2 <- data.frame(
+  Credits = c(3, 3, 2, 2, 3, 3, 3),
+  Semester = c(2, 2, 2, 2, 3, 3, 4)
+)
+
+
+# MAKING CSVs FROM DF
+data1.csv <- write.csv(
+  x = data1,
+  file = "./Part1CSVs/data1.csv"
+)
+
+data2.csv <- write.csv(
+  x = data2,
+  file = "./Part1CSVs/data2.csv"
+)
+```
+
+Import and use cbind to bind these 2 datasets together.
+```{r Import and use cbind to bind these 2 datasets together.}
+data3.csv <- write.csv(
+  x = cbind(data1, data2),
+  file = "./Part1CSVs/data3.csv"
+)
+```
+
+2. Joins
+--
+Unzip the US_Foreign_Aid.zip file into a directory on your computer
+```{r}
+foreign_aid <- unzip("../../Data/US_Foreign_Aid.zip", exdir = "./US_Foreign_Aid")
+foreign_aid
+```
+```{r}
+aid_data <- dir("US_Foreign_Aid/", pattern = "\\.csv")
+
+for (i in aid_data) {
+  us_foreign_aid <- str_sub(string = i, start=12, end=18)
+  temp <- read.table(file = file.path("US_Foreign_Aid/", i),
+                     header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  assign(x=us_foreign_aid, value = temp)
+}
+```
+
+Merge the data from the 80s and 90s and display to the console
+```{r Merge the data from the 80s and 90s and display to the console}
+aid80s90s <- merge(
+  x = Aid_80s,
+  y = Aid_90s,
+  by.x = c("Country.Name", "Program.Name"),
+  by.y = c("Country.Name", "Program.Name")
+)
+
+head(aid80s90s)
+```
+
+Merge the data from the 90s and 00s and display to the console
+```{r Merge the data from the 90s and 00s and display to the console}
+aid90s00s <- merge(
+  x = Aid_90s,
+  y = Aid_00s,
+  by.x = c("Country.Name", "Program.Name"),
+  by.y = c("Country.Name", "Program.Name")
+)
+
+head(aid90s00s)
+```
+
+Use the plyr package and join function to do the same for both sets of data  
+```{r Use the plyr package and join function to do the same for both sets of data}
+aid80s90s_join <- join(
+  x = Aid_80s,
+  y = Aid_90s,
+  by = c("Country.Name", "Program.Name")
+)
+
+aid90s00s_join <- join(
+  x = Aid_90s,
+  y = Aid_00s,
+  by = c("Country.Name", "Program.Name")
+)
+```
+
+Combine the 8 foreign aid data frames into 1 data frame by putting them in a list and joining toghether  
+
+* Test your list with different types of subscripts
+```{r Combine the 8 foreign aid data frames into 1}
+df_names <-str_sub(string = aid_data, start = 12, end = 18)
+df_list <- vector("list", length(df_names))
+names(df_list) <- df_names
+for (i in df_names) {
+  df_list[[i]] <- eval(parse(text = i))
+}
+
+all_aid <- Reduce(function(...) {
+  join(..., by = c("Country.Name", "Program.Name"))
+}, df_list)
+
+dim(all_aid)
+
+```
+
+3. reshape2
+--
+
+Use melt so that each row represents a Country-Program-Year entry with Dollars stored in a column  
+```{r Use melt so that each row represents a Country-Program-Year entry with Dollars stored in a column}
+aid_melt <- melt(
+  data = all_aid,
+  id.vars = c("Country.Name", "Program.Name"),
+  variable.name = "Year",
+  value.name = "Dollars"
+)
+
+aid_melt$Year <- as.numeric(str_sub(aid_melt$Year, start = 3, end = 6))
+
+tail(aid_melt)
+```
+
+Aggregate and plot the data
+```{r Aggregate and plot the data}
+melt_agg <- aggregate(
+  Dollars ~ Program.Name + Year,
+  data = aid_melt,
+  FUN = sum,
+  na.rm = TRUE
+)
+
+melt_agg$Program.Name <- str_sub(melt_agg$Program.Name, start = 1, end = 10)
+
+ggplot(melt_agg, aes(x=Year, y=Dollars)) +
+  geom_line(aes(group=Program.Name))
+```
+

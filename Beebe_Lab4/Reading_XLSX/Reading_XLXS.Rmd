@@ -1,0 +1,56 @@
+---
+title: "Reading Excel"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r Install and load the readxl package}
+
+library(readxl)
+path <- "BloombergData.xlsx"
+
+```
+
+```{r Use the excel_sheets function to determine what sheets are in BloombergData.xslx}
+
+excel_sheets(path = path)
+
+```
+
+```{r Create a variable called "finance1"}
+
+finance1 <- read_excel(path = path, sheet = "Sheet1")
+
+```
+
+```{r Crate a variable called "finance2"}
+
+finance2 <- read_excel(path = path, sheet = "Sheet2")
+finance2
+
+```
+
+```{r Do the same with sheet3, using "finance3" as the variable.}
+
+finance3 <- read_excel(path = path, sheet = "Sheet3")
+finance3
+
+```
+
+```{r Display the top 15 and bottom 15 rows of the finance1 variable.}
+
+head(finance1, 15)
+
+```
+
+```{r}
+
+tail(finance1, 15)
+
+```
+

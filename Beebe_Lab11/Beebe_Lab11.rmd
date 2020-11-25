@@ -1,0 +1,158 @@
+---
+title: 'Lab Assignment: Chapter 16 - Manipulating Strings'
+author: "Michael Beebe"
+output:
+  word_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Dependencies}
+library(glue)
+library(stringr)
+library(purrr)
+```
+
+1. paste
+--  
+
+Using the paste function, paste together "Hello" and "World"  
+
+* Use no separator  
+* Use a dash as a separator
+```{r Using the paste function, paste together "Hello" and "World"}
+hello <- "Hello"
+world <- "World"
+
+paste(hello, world, sep = "-")
+```
+
+String concatenation is somewhat outdated. I find string interpolation to be easier and much more readable. We can use the "glue" library to do this:
+```{r Interpolation}
+name <- "Michael"
+glue("My name is {name}.")
+```
+
+2. String Manipulation
+--
+Research the following string manipulation functions:  
+
+nchar() Takes a character vector as an argument and returns a vector whose elements contain the sizes of the corresponding elements of x.
+```{r nchar()}
+nchar("Hello World")
+```
+
+tolower() Translate characters in character vectors, in particular from upper to lower case or vice versa.
+```{r tolower()}
+tolower("HELLO WORLD")
+```
+
+toupper() Translate characters in character vectors, in particular from upper to lower case or vice versa.
+```{r toupper()}
+toupper("hello world")
+```
+
+chartr() Translate characters in character vectors, in particular from upper to lower case or vice versa.
+```{r chartr()}
+x <- "MiXeD cAsE 123"
+chartr("iXs", "why", x)
+chartr("a-cX", "D-Fw", x)
+```
+
+str_replace() replaces the values in x with indices given in list by those given in values. If necessary, the values in values are recycled.
+```{r str_replace()}
+fruits <- c("one apple", "two pears", "three bananas")
+str_replace(fruits, "([aeiou])", "")
+```
+
+substr() Extract or replace substrings in a character vector.
+```{r substr()}
+substr("abcdef", 2, 4)
+```
+
+str_sub() will recycle all arguments to be the same length as the longest argument. If any arguments are of length 0, the output will be a zero length character vector.
+```{r str_sub()}
+hw <- "Hadley Wickham"
+str_sub(hw, 1, 6)
+```
+
+setdiff() Each of union, intersect, setdiff and setequal will discard any duplicated values in the arguments, and they apply as.vector to their arguments (and so in particular coerce factors to character vectors).
+```{r setdiff()}
+(x <- c(sort(sample(1:20, 9)), NA))
+(y <- c(sort(sample(3:23, 7)), NA))
+setdiff(x, y)
+```
+
+setequal() Performs set union, intersection, (asymmetric!) difference, equality and membership on two vectors.
+```{r setequal()}
+(x <- c(sort(sample(1:20, 9)), NA))
+(y <- c(sort(sample(3:23, 7)), NA))
+setequal(x, y)
+```
+
+abbreviate() Abbreviate strings to at least minlength characters, such that they remain unique (if they were), unless strict = TRUE.
+```{r abbreviate()}
+x <- c("abcd", "efgh", "abce")
+abbreviate(x, 2)
+```
+
+strsplit() Split the elements of a character vector x into substrings according to the matches to substring split within them.
+```{r strsplit()}
+x <- c(as = "asfef", qu = "qwerty", "yuiop[", "b", "stuff.blah.yech")
+strsplit(x, "e")
+```
+
+sub() grep, grepl, regexpr, gregexpr and regexec search for matches to argument pattern within each element of a character vector: they differ in the format of and amount of detail in the results.
+```{r sub()}
+str <- "Now is the time      "
+sub(" +$", "", str)
+```
+
+gsub() grep, grepl, regexpr, gregexpr and regexec search for matches to argument pattern within each element of a character vector: they differ in the format of and amount of detail in the results.
+```{r gsub()}
+txt <- "a test of capitalizing"
+gsub("(\\w)(\\w*)", "\\U\\1\\L\\2", txt, perl=TRUE)
+```
+
+3. Regular Expression
+--
+
+Create a vector called mice with the following famous cartoon mice: "Mighty Mouse", "Mickey Mouse", "Speedy Gonzales", "Stuart Little", "Minnie Mouse", "Gus Gus", "Danger Mouse"
+```{r Create a vector called mice}
+mice <- c("Mighty Mouse", "Mickey Mouse", "Speedy Gonzales", "Stuart Little", "Minnie Mouse", "Gus Gus", "Danger Mouse")
+
+for (i in mice) print(i)
+```
+
+Use the str_detect function to check for the string "Mouse"
+```{r Use the str_detect function}
+for (i in mice) print(glue("{i}: {str_detect(i, 'Mouse')}"))
+```
+
+Use the str_subset function to check for the string "Mouse"
+```{r Use the str_subset function to check for the string "Mouse"}
+str_subset(mice, "Mouse")
+```
+
+Use the str_subset function to check for the characters "Mi" at the beginning of the string. Force lower case.
+```{r Use the str_subset function to check for the characters "Mi" at the beginning}
+str_subset(tolower(mice), "^mi")
+```
+ 
+Use the str_subset function to check for the character "s" at the end of the string.
+```{r Use the str_subset function to check for the character "s at the end of the string}
+str_subset(mice, "s$")
+```
+
+Use the str_subset function to find Mickey or Minnie.
+```{r Use the str_subset function to find Mickey or Minnie.}
+pattern <- c("Mickey", "Minnie")
+map(pattern, str_subset, string = mice)
+```
+
+
+
+
+

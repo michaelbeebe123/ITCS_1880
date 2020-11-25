@@ -1,0 +1,104 @@
+---
+title: "Chapter 13 - Iterating with purrr"
+author: "Michael Beebe"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(purrr)
+```
+
+--------------------------------------------------------------------------------    
+
+1. map
+--
+Create a list called myList. in this list store:  
+ - A matrix of the numbers 1-10 in 2 rows  
+ - The even numbers from 0-10  
+ - The odd numbers from 1-9  
+ - A matrix of the numbers from 1-9 in 3 rows  
+```{r Create a list called myList. in this list store}
+myList <- list(
+  matrix(data = 1:10, nrow = 2),
+  c(2, 4, 5, 6, 8, 10),
+  c(1, 3, 5, 7, 9),
+  matrix(data = 1:9, nrow = 3)
+)
+
+myList
+```
+
+Map the mean and sum functions to your list
+```{r Map the mean and sum functions to your list}
+map(myList, mean)
+map(myList, sum)
+```
+
+Use the identical function to determine if map and lapply are the same when applied to myList
+```{r Use the identical function to determine if map and lapply are the same when applied to myList}
+lapply(myList, mean)
+lapply(myList, sum)
+```
+
+2. map with Specified Types
+--
+Using your list - myList - find the following:  
+ - Use map_int to find number of rows or length of each list element  
+```{r Use map_int to find number of rows or length of each list element}
+map_int(myList, length)
+```
+
+ - Use map_dbl to find the standard deviation  
+```{r Use map_dbl to find the standard deviation}
+map_dbl(myList, sd)
+```
+ 
+ - Use map_chr to find the class of each element in your list  
+```{r Use map_chr to find the class of each element in your list}
+map_chr(myList, typeof)
+```
+ 
+ - Use map_lgl to determine if the number of rows in each element of your list is < 3  
+```{r Use map_lgl to determine if the number of rows in each element of your list is < 3}
+check <- function(x) is.list(nrow(x)) < 3
+map_lgl(myList, check)
+```
+ 
+ - Create the data frame and list on page 184 of your text. Use map_df to call the function with the list of lengths  
+```{r Create the data frame and list on page 184 of your text}
+buildDF <- function(x) {
+  data.frame(A=1:x, B=x:1)
+}
+
+listOfLengths <- list(3, 4, 1, 5)
+
+listOfLengths %>%
+  map(buildDF)
+```
+
+3. Iterating over a data.frame
+--
+Use the mtcars built in data set  
+Find the mean of all of the numeric data in the dataset
+```{r Find the mean of all of the numeric data in the dataset}
+means <-
+  mtcars %>%
+    map(mean)
+
+means
+```
+
+Find the standard deviation of all of the numeric data in the dataset
+```{r Find the standard deviation of all of the numeric data in the dataset}
+stdvs <-
+  mtcars %>%
+    map(sd)
+
+stdvs
+```
+
+

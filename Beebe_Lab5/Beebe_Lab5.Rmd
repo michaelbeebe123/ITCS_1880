@@ -1,0 +1,95 @@
+---
+title: "Lab Assignment 5"
+author: "Michael Beebe"
+date: "9/21/2020"
+output: html_document
+---  
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+Loading the Old Faithful dataset
+```{r Loading the Old Faithful dataset}
+data("faithful")
+head(faithful)
+```
+
+2.1. Histogram
+--
+```{r Base R histogram}
+hist(
+  x = faithful$eruptions,
+  main = "Old Faithful Eruptions",
+  xlab = "Eruption Times (mins)",
+  ylab = "Time Between Eruptions (mins)"
+)
+```
+
+2.2. Base Scatterplot
+--
+```{r Base R scatterplot 1}
+scatter.smooth(
+  x = faithful$eruptions,
+  y = faithful$waiting,
+  main = "Old Faithful Eruptions",
+  xlab = "Eruption Times (mins)",
+  ylab = "Time Between Eruptions (mins)"
+)
+```
+
+```{r Base R scatterplot 2}
+scatter.smooth(
+  x = faithful$waiting,
+  y = faithful$eruptions,
+  main = "Old Faithful Eruptions",
+  xlab = "Time Between Eruptions (mins)",
+  ylab = "Eruption Times (mins)"
+)
+```
+
+According to these scatterplots, longer eruptions have longer waiting times to the next eruption, and shorter eruptions have shorter waiting times in between eruptions.  
+
+2.3. Boxplots
+--
+```{r Base R boxplot}
+boxplot(
+  x = faithful
+)
+```
+From this boxplot, we can see that the wait times are much longer than the eruptions themselves.  
+
+3. ggplot2
+--
+
+3.1. Histograms and Densities
+--
+```{r Histograms}
+# ggplot2 loaded at the beginning of the md
+ggplot(data = faithful, aes(x=eruptions)) + geom_histogram(binwidth = 1)
+```
+
+```{r Densities}
+ggplot(data = faithful, aes(x=eruptions)) + geom_density(color = "blue")
+```
+
+3.2. Scatterplots
+--
+```{r Scatterplots}
+f <- 22
+ggplot(data = faithful, aes(x = eruptions, y = waiting, fill = "blue")) + geom_point(shape = f)
+```
+
+3.3. Boxplots
+--
+```{r Boxplots}
+ggplot(data = faithful, aes(x=eruptions)) + geom_boxplot()
+```
+
+3.4. Line Graphs
+--
+```{r Line Graphs}
+ggplot(data = faithful, aes(x=eruptions, y = waiting)) + geom_line()
+```
+
