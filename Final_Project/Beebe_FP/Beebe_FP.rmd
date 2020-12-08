@@ -1,0 +1,386 @@
+---
+title: "ITCS 1880: Final Project"
+author: "By Michael Beebe"
+output:
+  html_document: default
+  word_document: default
+---
+
+-------------------------------------------------
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Loading in dependencies
+```{r Dependencies, message=FALSE}
+library(tidyverse)
+library(glue)
+library(ggplot2)
+library(hrbrthemes)
+library(psych)
+library(graphics)
+```
+
+Loading in dataset to be analyzed
+```{r}
+customer_data <- read.csv("Data/Mall_Customers.csv")
+```
+
+
+# Exploratory Data Analysis  
+
+The number of rows and the number of columns in the data set.
+```{r}
+nrow(customer_data)
+```
+
+```{r}
+ncol(customer_data)
+```
+
+The names of the columns in the data set
+```{r}
+colnames(customer_data)
+```
+
+
+The top 10 rows of the data set
+```{r}
+head(customer_data, 10)
+```
+
+The class of the dataset and each column
+```{r}
+class(customer_data)
+```
+```{r}
+lapply(customer_data, class)
+```
+
+Summarize the data in the Mall Customers data set. Be sure to include: Min, Max, Mean, Median, Quartiles and Standard Deviation:  
+
+### Age
+
+Min
+```{r}
+glue("Min Age: {min(customer_data$Age)}")
+```
+
+Max   
+```{r}
+glue("Max Age: {max(customer_data$Age)}")
+```
+  
+Mean    
+```{r}
+glue("Mean Age: {mean(customer_data$Age)}")
+```
+  
+Median
+```{r}
+glue("Median Age: {median(customer_data$Age)}")
+```
+  
+Quartiles
+```{r}
+quantile(customer_data$Age)
+```
+  
+Standard Deviation
+```{r}
+glue("Standard Deviation of Age: {sd(customer_data$Age)}")
+```
+
+```{r}
+describe(customer_data)
+describe.by(customer_data, group = customer_data$Gender)
+```
+
+### Annual Income ($1,000's)
+
+Min
+```{r}
+glue("Min Annual Income in $1,000's: {min(customer_data$Annual.Income..k..)}")
+```
+
+Max
+```{r}
+glue("Max Annual Income in $1,000's: {max(customer_data$Annual.Income..k..)}")
+```
+  
+Mean
+```{r}
+glue("Mean Annual Income in $1,000's: {mean(customer_data$Annual.Income..k..)}")
+```
+  
+Median
+```{r}
+glue("Median Annual Income in $1,000's: {median(customer_data$Annual.Income..k..)}")
+```
+  
+Quartiles
+```{r}
+quantile(customer_data$Annual.Income..k..)
+```
+
+Standard Deviation
+```{r}
+glue("Standard Deviation of Annual Income in $1,000's: {sd(customer_data$Annual.Income..k..)}")
+```
+
+### Spending Score (1-100)
+
+Min
+```{r}
+glue("Min Spending Score: {min(customer_data$Spending.Score..1.100.)}")
+```
+
+Max
+```{r}
+glue("Max Spendinc Score: {max(customer_data$Spending.Score..1.100.)}")
+```
+  
+Mean
+```{r}
+glue("Mean Spending Score: {mean(customer_data$Spending.Score..1.100.)}")
+```
+  
+Median
+```{r}
+glue("Median Spending Score: {median(customer_data$Spending.Score..1.100.)}")
+```
+  
+Quartiles
+```{r}
+quantile(customer_data$Spending.Score..1.100.)
+```
+
+Standard Deviation
+```{r}
+glue("Standard Deviation of Spending Score: {sd(customer_data$Spending.Score..1.100.)}")
+```
+### Observations by Gender
+
+Average age by gender
+```{r}
+age_by_gender <- aggregate(
+  x = customer_data$Age,
+  by = list(customer_data$Gender),
+  FUN = mean
+)
+age_by_gender
+```
+
+Average annual income by gender
+```{r}
+income_by_gender <- aggregate(
+  x = customer_data$Annual.Income..k..,
+  by = list(customer_data$Gender),
+  FUN = mean
+)
+income_by_gender
+```
+
+Average spending score by gender
+```{r}
+spending_by_gender <- aggregate(
+  x = customer_data$Spending.Score..1.100.,
+  by = list(customer_data$Gender),
+  FUN = mean
+)
+spending_by_gender
+```
+
+New DF combining the three above aggregations
+```{r}
+summarized_avgs_by_gender <- data.frame(
+  Gender = c("Female", "Male"),
+  Average_Age = age_by_gender$x,
+  Average_Annual_Income = income_by_gender$x,
+  Avergae_Spending = spending_by_gender$x
+)
+summarized_avgs_by_gender
+```
+
+### Data Analysis Summary
+!!!!!!!!  TODO  !!!!!!!!
+
+-------------------------------------------------------------------
+
+# Plotting
+
+### Boxplots
+
+```{r}
+ggplot(data = customer_data, aes(x = Age)) +
+  geom_boxplot() +
+  ggtitle("Age Distribution and Variability") +
+  xlab("Age") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = customer_data, aes(x = Annual.Income..k..)) +
+  geom_boxplot() +
+  ggtitle("Income Distribution and Variability") +
+  xlab("Annual Income ($1,000's)") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = customer_data, aes(x = Spending.Score..1.100.)) +
+  geom_boxplot() +
+  ggtitle("Spending Score Distribution and Variability") +
+  xlab("Spending Score (1-100)") +
+  theme_get()
+```
+
+### Histograms (By Gender)
+
+```{r}
+ggplot(data = customer_data, mapping = aes(x=Gender)) +
+  geom_bar() +
+  ggtitle ("Number of Observations") +
+  xlab("Gender") +
+  ylab("Count") +
+  theme_get()
+```
+
+```{r message=FALSE}
+ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Average_Age)) +
+  geom_histogram(stat="identity") +
+  ggtitle ("Average Age by Gender") +
+  xlab("Gender") +
+  ylab("Average Age") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Average_Annual_Income)) +
+  geom_histogram(stat="identity") +
+  ggtitle ("Avg Annual Income by Gender") +
+  xlab("Gender") +
+  ylab("Avg Annual Income ($1,000's)") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Avergae_Spending)) +
+  geom_histogram(stat="identity") +
+  ggtitle ("Avg Spending Score by Gender") +
+  xlab("Gender") +
+  ylab("Avg Spending Score") +
+  theme_get()
+```
+
+### Histograms (By Age Group)
+
+```{r}
+#         ADDING AN AGE GROUP COLUMN TO THE CUSTOMER DATA DF
+age_cut <- cut(customer_data$Age, breaks = c(18, 30, 40, 50, 60, 70, 80), right = FALSE)
+customer_data_2 <- data.frame(customer_data, Age_Group = age_cut)
+head(customer_data_2)
+```
+
+```{r}
+ggplot(customer_data_2, aes(x = Age_Group)) +
+  geom_bar() +
+  ggtitle ("Number of Observations by Age") +
+  xlab("Age Group") +
+  ylab("Count") +
+  theme_get()
+```
+
+```{r}
+income_by_age_group <- aggregate(
+  x = customer_data_2$Annual.Income..k..,
+  by = list(customer_data_2$Age_Group),
+  FUN = mean
+)
+income_by_age_group
+```
+
+```{r}
+spending_by_age_group <- aggregate(
+  x = customer_data_2$Spending.Score..1.100.,
+  by = list(customer_data_2$Age_Group),
+  FUN = mean
+)
+spending_by_age_group
+```
+
+```{r}
+summarized_avgs_by_age_group <- data.frame(
+  Age_Group = income_by_age_group$Group.1,
+  Avg_Income = income_by_age_group$x,
+  Avg_Spending = spending_by_age_group$x
+)
+summarized_avgs_by_age_group
+```
+
+```{r}
+ggplot(data = summarized_avgs_by_age_group, mapping = aes(x=Age_Group, y=Avg_Income)) +
+  geom_histogram(stat="identity") +
+  ggtitle ("Avg Annual Income by Age Group") +
+  xlab("Age Group") +
+  ylab("Avg Annual Income ($1,000's)") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = summarized_avgs_by_age_group, mapping = aes(x=Age_Group, y=Avg_Spending)) +
+  geom_histogram(stat="identity") +
+  ggtitle ("Avg Spending by Age Group") +
+  xlab("Age Group") +
+  ylab("Avg Spending Score (1-100)") +
+  theme_get()
+```
+
+### Scatterplot
+```{r}
+ggplot(data = customer_data, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
+  geom_point() +
+  ggtitle("Income and Spending (Whole Dataset)") +
+  xlab("Annual Income ($1,000)") +
+  ylab("Spending Score (1-100)") +
+  theme_get()
+```
+
+```{r}
+male_df <- customer_data_2[customer_data_2$Gender == "Male", ]
+head(male_df)
+
+female_df <- customer_data_2[customer_data_2$Gender == "Female", ]
+head(female_df)
+```
+
+```{r}
+ggplot(data = male_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
+  geom_point() +
+  ggtitle("Income and Spending (Male)") +
+  xlab("Annual Income ($1,000)") +
+  ylab("Spending Score (1-100)") +
+  theme_get()
+```
+
+```{r}
+ggplot(data = female_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
+  geom_point() +
+  ggtitle("Income and Spending (Female)") +
+  xlab("Annual Income ($1,000)") +
+  ylab("Spending Score (1-100)") +
+  theme_get()
+```
+
+### Plot Analysis Summary
+
+!!!!!!!!  TODO  !!!!!!!!
+
+-------------------------------------------------------------------
+
+# Probability and Statistical Analysis
+```{r}
+
+```
+
