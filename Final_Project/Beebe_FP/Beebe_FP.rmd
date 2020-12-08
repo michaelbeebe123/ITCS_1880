@@ -380,7 +380,52 @@ ggplot(data = female_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1
 -------------------------------------------------------------------
 
 # Probability and Statistical Analysis
-```{r}
 
+### Distribution
+
+Use the dnorm function to verify whether or not the Age, Annual Income, and Spending Score variables follow the normal distribution
+```{r}
+age.range <- min(customer_data$Age):max(customer_data$Age)
+age.mean <- mean(customer_data$Age)
+age.sd <- sd(customer_data$Age)
+age.dist <- dnorm(age.range, mean = age.mean, sd = age.sd)
+age.df <- data.frame(Age = age.range, Density = age.dist)
+
+ggplot(age.df, aes(x = Age, y = Density)) +
+  geom_line() +
+  ggtitle("Age Distribution")
 ```
 
+```{r}
+income.range <- min(customer_data$Annual.Income..k..):max(customer_data$Annual.Income..k..)
+income.mean <- mean(customer_data$Annual.Income..k..)
+income.sd <- sd(customer_data$Annual.Income..k..)
+income.dist <- dnorm(income.range, mean = income.mean, sd = income.sd)
+income.df <- data.frame(Income = income.range, Density = income.dist)
+
+ggplot(income.df, aes(x = Income, y = Density)) +
+  geom_line() +
+  ggtitle("Annual Income Distribution") +
+  xlab("Annual Income ($1,000's)")
+```
+
+```{r}
+spending.range <- min(customer_data$Spending.Score..1.100.):max(customer_data$Spending.Score..1.100.)
+spending.mean <- mean(customer_data$Spending.Score..1.100.)
+spending.sd <- sd(customer_data$Spending.Score..1.100.)
+spending.dist <- dnorm(spending.range, mean = spending.mean, sd = spending.sd)
+spending.df <- data.frame(Spending = spending.range, Density = spending.dist)
+
+ggplot(spending.df, aes(x = Spending, y = Density)) +
+  geom_line() +
+  ggtitle("Spending Score Distribution") +
+  xlab("Spending Score (1-100)")
+```
+
+As we can see, all three of these variables (Age, Annual Income, and Spending Score) follow the normal distribution.
+
+### Shapiro-Wilk Normality Test
+
+Use the Shapiro-Wilk normality test to test for normality of each of the variables, and then each of the variables based on Gender.  
+
+* What are the results? It they do not follow the normal distribution – which are closest?
