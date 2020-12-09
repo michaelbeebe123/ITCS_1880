@@ -1,9 +1,9 @@
 ---
 title: "ITCS 1880: Final Project"
-author: "By Michael Beebe"
+author: "Michael Beebe"
 output:
-  html_document: default
   word_document: default
+  html_document: default
 ---
 
 -------------------------------------------------
@@ -13,48 +13,48 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Loading in dependencies
-```{r Dependencies, message=FALSE}
+```{r Dependencies, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(glue)
 library(ggplot2)
 library(hrbrthemes)
 library(psych)
 library(graphics)
+library(dplyr)
 ```
 
 Loading in dataset to be analyzed
-```{r}
+```{r warning=FALSE}
 customer_data <- read.csv("Data/Mall_Customers.csv")
 ```
-
 
 # Exploratory Data Analysis  
 
 The number of rows and the number of columns in the data set.
-```{r}
+```{r warning=FALSE}
 nrow(customer_data)
 ```
 
-```{r}
+```{r warning=FALSE}
 ncol(customer_data)
 ```
 
 The names of the columns in the data set
-```{r}
+```{r warning=FALSE}
 colnames(customer_data)
 ```
 
 
 The top 10 rows of the data set
-```{r}
+```{r warning=FALSE}
 head(customer_data, 10)
 ```
 
 The class of the dataset and each column
-```{r}
+```{r warning=FALSE}
 class(customer_data)
 ```
-```{r}
+```{r warning=FALSE}
 lapply(customer_data, class)
 ```
 
@@ -63,107 +63,102 @@ Summarize the data in the Mall Customers data set. Be sure to include: Min, Max,
 ### Age
 
 Min
-```{r}
+```{r warning=FALSE}
 glue("Min Age: {min(customer_data$Age)}")
 ```
 
 Max   
-```{r}
+```{r warning=FALSE}
 glue("Max Age: {max(customer_data$Age)}")
 ```
   
 Mean    
-```{r}
+```{r warning=FALSE}
 glue("Mean Age: {mean(customer_data$Age)}")
 ```
   
 Median
-```{r}
+```{r warning=FALSE}
 glue("Median Age: {median(customer_data$Age)}")
 ```
   
 Quartiles
-```{r}
+```{r warning=FALSE}
 quantile(customer_data$Age)
 ```
   
 Standard Deviation
-```{r}
+```{r warning=FALSE}
 glue("Standard Deviation of Age: {sd(customer_data$Age)}")
-```
-
-```{r}
-describe(customer_data)
-describe.by(customer_data, group = customer_data$Gender)
 ```
 
 ### Annual Income ($1,000's)
 
 Min
-```{r}
+```{r warning=FALSE}
 glue("Min Annual Income in $1,000's: {min(customer_data$Annual.Income..k..)}")
 ```
 
 Max
-```{r}
+```{r warning=FALSE}
 glue("Max Annual Income in $1,000's: {max(customer_data$Annual.Income..k..)}")
 ```
   
 Mean
-```{r}
+```{r warning=FALSE}
 glue("Mean Annual Income in $1,000's: {mean(customer_data$Annual.Income..k..)}")
 ```
   
 Median
-```{r}
+```{r warning=FALSE}
 glue("Median Annual Income in $1,000's: {median(customer_data$Annual.Income..k..)}")
 ```
   
 Quartiles
-```{r}
+```{r warning=FALSE}
 quantile(customer_data$Annual.Income..k..)
 ```
 
 Standard Deviation
-```{r}
+```{r warning=FALSE}
 glue("Standard Deviation of Annual Income in $1,000's: {sd(customer_data$Annual.Income..k..)}")
 ```
 
 ### Spending Score (1-100)
 
 Min
-```{r}
+```{r warning=FALSE}
 glue("Min Spending Score: {min(customer_data$Spending.Score..1.100.)}")
 ```
 
 Max
-```{r}
+```{r warning=FALSE}
 glue("Max Spendinc Score: {max(customer_data$Spending.Score..1.100.)}")
 ```
   
 Mean
-```{r}
+```{r warning=FALSE}
 glue("Mean Spending Score: {mean(customer_data$Spending.Score..1.100.)}")
 ```
   
 Median
-```{r}
+```{r warning=FALSE}
 glue("Median Spending Score: {median(customer_data$Spending.Score..1.100.)}")
 ```
   
 Quartiles
-```{r}
+```{r warning=FALSE}
 quantile(customer_data$Spending.Score..1.100.)
 ```
 
 Standard Deviation
-```{r}
+```{r warning=FALSE}
 glue("Standard Deviation of Spending Score: {sd(customer_data$Spending.Score..1.100.)}")
 ```
 ### Observations by Gender
 
 Average age by gender
-```{r}
+```{r warning=FALSE}
 age_by_gender <- aggregate(
   x = customer_data$Age,
   by = list(customer_data$Gender),
@@ -173,7 +168,7 @@ age_by_gender
 ```
 
 Average annual income by gender
-```{r}
+```{r warning=FALSE}
 income_by_gender <- aggregate(
   x = customer_data$Annual.Income..k..,
   by = list(customer_data$Gender),
@@ -183,7 +178,7 @@ income_by_gender
 ```
 
 Average spending score by gender
-```{r}
+```{r warning=FALSE}
 spending_by_gender <- aggregate(
   x = customer_data$Spending.Score..1.100.,
   by = list(customer_data$Gender),
@@ -193,7 +188,7 @@ spending_by_gender
 ```
 
 New DF combining the three above aggregations
-```{r}
+```{r warning=FALSE}
 summarized_avgs_by_gender <- data.frame(
   Gender = c("Female", "Male"),
   Average_Age = age_by_gender$x,
@@ -203,8 +198,22 @@ summarized_avgs_by_gender <- data.frame(
 summarized_avgs_by_gender
 ```
 
+### Summary Stastics
+
+Whole Dataset
+```{r warning=FALSE}
+describe(customer_data)
+```
+
+By Gender
+```{r warning=FALSE}
+describe.by(customer_data, group = customer_data$Gender)
+```
+
 ### Data Analysis Summary
-!!!!!!!!  TODO  !!!!!!!!
+
+In summary, this data set includes 200 observations and consists of data collected by mall customers. 112 of the observations are of females and 88 are of males. The average age of each gender in the data set is about the same at 38.85 years old. On average, the males in this sample earn slightly more with an average of 63,230 dollars per year whereas the average annual income for the females is at 59,250 dollars per year. On average the females spend more with an average spending score of 51.53 out of 100 whereas the males have an average spending score of 48.51.
+
 
 -------------------------------------------------------------------
 
@@ -212,87 +221,87 @@ summarized_avgs_by_gender
 
 ### Boxplots
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = customer_data, aes(x = Age)) +
   geom_boxplot() +
   ggtitle("Age Distribution and Variability") +
   xlab("Age") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = customer_data, aes(x = Annual.Income..k..)) +
   geom_boxplot() +
   ggtitle("Income Distribution and Variability") +
   xlab("Annual Income ($1,000's)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = customer_data, aes(x = Spending.Score..1.100.)) +
   geom_boxplot() +
   ggtitle("Spending Score Distribution and Variability") +
   xlab("Spending Score (1-100)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
 ### Histograms (By Gender)
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = customer_data, mapping = aes(x=Gender)) +
   geom_bar() +
   ggtitle ("Number of Observations") +
   xlab("Gender") +
   ylab("Count") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r message=FALSE}
+```{r warning=FALSE}
 ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Average_Age)) +
   geom_histogram(stat="identity") +
   ggtitle ("Average Age by Gender") +
   xlab("Gender") +
   ylab("Average Age") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Average_Annual_Income)) +
   geom_histogram(stat="identity") +
   ggtitle ("Avg Annual Income by Gender") +
   xlab("Gender") +
   ylab("Avg Annual Income ($1,000's)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = summarized_avgs_by_gender, mapping = aes(x=Gender, y=Avergae_Spending)) +
   geom_histogram(stat="identity") +
   ggtitle ("Avg Spending Score by Gender") +
   xlab("Gender") +
   ylab("Avg Spending Score") +
-  theme_get()
+  theme_modern_rc()
 ```
 
 ### Histograms (By Age Group)
 
-```{r}
+```{r warning=FALSE}
 #         ADDING AN AGE GROUP COLUMN TO THE CUSTOMER DATA DF
 age_cut <- cut(customer_data$Age, breaks = c(18, 30, 40, 50, 60, 70, 80), right = FALSE)
 customer_data_2 <- data.frame(customer_data, Age_Group = age_cut)
 head(customer_data_2)
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(customer_data_2, aes(x = Age_Group)) +
   geom_bar() +
   ggtitle ("Number of Observations by Age") +
   xlab("Age Group") +
   ylab("Count") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 income_by_age_group <- aggregate(
   x = customer_data_2$Annual.Income..k..,
   by = list(customer_data_2$Age_Group),
@@ -301,7 +310,7 @@ income_by_age_group <- aggregate(
 income_by_age_group
 ```
 
-```{r}
+```{r warning=FALSE}
 spending_by_age_group <- aggregate(
   x = customer_data_2$Spending.Score..1.100.,
   by = list(customer_data_2$Age_Group),
@@ -310,7 +319,7 @@ spending_by_age_group <- aggregate(
 spending_by_age_group
 ```
 
-```{r}
+```{r warning=FALSE}
 summarized_avgs_by_age_group <- data.frame(
   Age_Group = income_by_age_group$Group.1,
   Avg_Income = income_by_age_group$x,
@@ -319,35 +328,35 @@ summarized_avgs_by_age_group <- data.frame(
 summarized_avgs_by_age_group
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = summarized_avgs_by_age_group, mapping = aes(x=Age_Group, y=Avg_Income)) +
   geom_histogram(stat="identity") +
   ggtitle ("Avg Annual Income by Age Group") +
   xlab("Age Group") +
   ylab("Avg Annual Income ($1,000's)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = summarized_avgs_by_age_group, mapping = aes(x=Age_Group, y=Avg_Spending)) +
   geom_histogram(stat="identity") +
   ggtitle ("Avg Spending by Age Group") +
   xlab("Age Group") +
   ylab("Avg Spending Score (1-100)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
 ### Scatterplot
-```{r}
+```{r warning=FALSE}
 ggplot(data = customer_data, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
   geom_point() +
   ggtitle("Income and Spending (Whole Dataset)") +
   xlab("Annual Income ($1,000)") +
   ylab("Spending Score (1-100)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 male_df <- customer_data_2[customer_data_2$Gender == "Male", ]
 head(male_df)
 
@@ -355,27 +364,38 @@ female_df <- customer_data_2[customer_data_2$Gender == "Female", ]
 head(female_df)
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = male_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
   geom_point() +
   ggtitle("Income and Spending (Male)") +
   xlab("Annual Income ($1,000)") +
   ylab("Spending Score (1-100)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data = female_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1.100.)) +
   geom_point() +
   ggtitle("Income and Spending (Female)") +
   xlab("Annual Income ($1,000)") +
   ylab("Spending Score (1-100)") +
-  theme_get()
+  theme_modern_rc()
 ```
 
 ### Plot Analysis Summary
 
-!!!!!!!!  TODO  !!!!!!!!
+From the above plots, we can deduce all of the conclusions mentioned above in addition to the following:  
+
+* The age group with the most observations is 30-40 years old with 62 observations  
+* Well over half of the observations are between ages 18-50  
+* People between the ages of 30-40 earn the most
+* People between the ages 40-50 earn the second most  
+* People between the ages 50-60 earn the third most  
+* People between the ages 18-30 and people between the ages 60-70  
+* People between the ages 18-40 spend the most
+* People between the ages 40-60 spend the least  
+* There is not much of a correlation between income and spending, for both genders
+
 
 -------------------------------------------------------------------
 
@@ -384,7 +404,7 @@ ggplot(data = female_df, mapping = aes(x=Annual.Income..k.., y=Spending.Score..1
 ### Distribution
 
 Use the dnorm function to verify whether or not the Age, Annual Income, and Spending Score variables follow the normal distribution
-```{r}
+```{r warning=FALSE}
 age.range <- min(customer_data$Age):max(customer_data$Age)
 age.mean <- mean(customer_data$Age)
 age.sd <- sd(customer_data$Age)
@@ -393,10 +413,11 @@ age.df <- data.frame(Age = age.range, Density = age.dist)
 
 ggplot(age.df, aes(x = Age, y = Density)) +
   geom_line() +
-  ggtitle("Age Distribution")
+  ggtitle("Age Distribution") +
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 income.range <- min(customer_data$Annual.Income..k..):max(customer_data$Annual.Income..k..)
 income.mean <- mean(customer_data$Annual.Income..k..)
 income.sd <- sd(customer_data$Annual.Income..k..)
@@ -406,10 +427,11 @@ income.df <- data.frame(Income = income.range, Density = income.dist)
 ggplot(income.df, aes(x = Income, y = Density)) +
   geom_line() +
   ggtitle("Annual Income Distribution") +
-  xlab("Annual Income ($1,000's)")
+  xlab("Annual Income ($1,000's)") +
+  theme_modern_rc()
 ```
 
-```{r}
+```{r warning=FALSE}
 spending.range <- min(customer_data$Spending.Score..1.100.):max(customer_data$Spending.Score..1.100.)
 spending.mean <- mean(customer_data$Spending.Score..1.100.)
 spending.sd <- sd(customer_data$Spending.Score..1.100.)
@@ -419,13 +441,126 @@ spending.df <- data.frame(Spending = spending.range, Density = spending.dist)
 ggplot(spending.df, aes(x = Spending, y = Density)) +
   geom_line() +
   ggtitle("Spending Score Distribution") +
-  xlab("Spending Score (1-100)")
+  xlab("Spending Score (1-100)") +
+  theme_modern_rc()
 ```
 
 As we can see, all three of these variables (Age, Annual Income, and Spending Score) follow the normal distribution.
 
 ### Shapiro-Wilk Normality Test
 
-Use the Shapiro-Wilk normality test to test for normality of each of the variables, and then each of the variables based on Gender.  
+Shapiro-Wilk normality test to test for normality of each of the variables 
 
-* What are the results? It they do not follow the normal distribution – which are closest?
+* Whole dataset
+```{r warning=FALSE}
+shapiro.test(customer_data$Age)
+shapiro.test(customer_data$Annual.Income..k..)
+shapiro.test(customer_data$Spending.Score..1.100.)
+```
+
+* Male
+```{r warning=FALSE}
+shapiro.test(male_df$Age)
+shapiro.test(male_df$Annual.Income..k..)
+shapiro.test(male_df$Spending.Score..1.100.)
+```
+
+* Female
+```{r warning=FALSE}
+shapiro.test(female_df$Age)
+shapiro.test(female_df$Annual.Income..k..)
+shapiro.test(female_df$Spending.Score..1.100.)
+```
+
+### Ansari-Bradley Test
+
+Gender-Age
+```{r warning=FALSE}
+ansari.test(x = customer_data$Gender, y = customer_data$Age)
+```
+
+Gender-Annual Income
+```{r warning=FALSE}
+ansari.test(x = customer_data$Gender, y = customer_data$Annual.Income..k..)
+```
+
+Gender-Spending Score
+```{r warning=FALSE}
+ansari.test(x = customer_data$Gender, y = customer_data$Spending.Score..1.100.)
+```
+
+### Age Probabilities
+
+Probability a person's age is above 40 in the dataset
+```{r warning=FALSE}
+glue("{round(pnorm(q = 40, mean = age.mean, sd = age.sd, lower.tail = FALSE) * 100, digits = 2)}%")
+```
+
+Probability a person's age is below 40 in the dataset
+```{r warning=FALSE}
+glue("{round(pnorm(q = 40, mean = age.mean, sd = age.sd, lower.tail = TRUE) * 100, digits = 2)}%")
+```
+
+Probability a person's age is above 50 in the dataset
+```{r warning=FALSE}
+glue("{round(pnorm(q = 50, mean = age.mean, sd = age.sd, lower.tail = FALSE) * 100, digits = 2)}%")
+```
+
+Probability a person's age is below 50 in the dataset
+```{r warning=FALSE}
+glue("{round(pnorm(q = 50, mean = age.mean, sd = age.sd, lower.tail = TRUE) * 100, digits = 2)}%")
+```
+
+### corMallData(data,gender) {seperate data into two different DF's by gender}
+```{r warning=FALSE}
+corMallData <- function(data = customer_data, gender) {
+  gDF <- data.frame()
+  
+  for (i in 1:200) {
+    if (data[i, 2] == gender) {
+      gData <- cbind(data[i,3],data[i,4], data[i,5])
+      gDF <- rbind(gDF, gData)
+    }
+  }
+  
+  return(gDF)
+}
+
+fData <- corMallData(gender = "Female")
+names(fData)[1] <- "Age"
+names(fData)[2] <- "Income"
+names(fData)[3] <- "Spending"
+
+mData <- corMallData(gender = "Male")
+names(mData)[1] <- "Age"
+names(mData)[2] <- "Income"
+names(mData)[3] <- "Spending"
+  
+head(fData)
+head(mData)
+```
+
+
+### Probability and Statistical Analysis Summary
+
+* Most of the observations in the data set are of people under the age of 50 (78.76%)  
+    * We might be able to deduce from this information that most of the people going to malls are under the age of 50
+* Gender, Age, Income and Spending Score all have normal distributions  
+
+--------------------------------------------------------------------------------------------------------------------------
+
+# Overall Summary
+
+
+It is important to note that this data set only provides a very little amount of information. We can conclude from the data given that the on average, the men earn more than the women and the women spend more than the men. However, we do not have enough information to explain why that might be. Some other variables that might help explain the income difference are education level and career field. One variables that could better help us understand the slight difference in spending among the genders is whether or not the person has children or dependents, and if so, how many. Furthermore, it is important to consider how the smaller amount of people above the age of 50 might be skewing the data. In conclusion, if we want to perform a truly effective analysis, it would be helpful to collect more information to get a better understanding of the situation and be able to explain our findings, rather than simply report them.      
+
+
+The part of this course I enjoyed the most were the labs. Programming is my favorite thing to do in the world and I am very grateful that I have the opportunity to study it and make a career out of it. Prior to this class, I have already had a bit of exposure to R and statistics through self-teaching, so I did not really struggle with any of the concepts in this course. The reason why I took the course was to fulfill a course requirement to graduate. That being said, I would recommend this course to anyone, and I feel that it teaches you a valuable skill set, even for people who aren't interested in pursuing a career in data analytics or any other career that falls under the umbrella of IT. I'll see you next semester Dr. Crissman!      
+
+
+
+
+
+
+
+
